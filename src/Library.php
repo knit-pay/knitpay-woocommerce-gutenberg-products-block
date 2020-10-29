@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureFlag;
 
 /**
  * Library class.
@@ -41,6 +42,8 @@ class Library {
 	 */
 	public static function register_blocks() {
 		global $wp_version;
+		$feature_flag = Package::container()->get( FeatureFlag::class );
+
 		$blocks = [
 			'AllReviews',
 			'FeaturedCategory',
@@ -66,12 +69,12 @@ class Library {
 			$blocks[] = 'AttributeFilter';
 			$blocks[] = 'ActiveFilters';
 
-			if ( Package::is_feature_plugin_build() ) {
+			if ( $feature_flag::is_feature_plugin_build() ) {
 				$blocks[] = 'Checkout';
 				$blocks[] = 'Cart';
 			}
 		}
-		if ( Package::is_experimental_build() ) {
+		if ( $feature_flag::is_experimental_build() ) {
 			$blocks[] = 'SingleProduct';
 		}
 		foreach ( $blocks as $class ) {

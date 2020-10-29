@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureFlag;
 
 /**
  * Assets class.
@@ -34,7 +35,8 @@ class Assets {
 	 * as part of ongoing refactoring.
 	 */
 	public static function register_assets() {
-		$asset_api = Package::container()->get( AssetApi::class );
+		$asset_api    = Package::container()->get( AssetApi::class );
+		$feature_flag = Package::container()->get( FeatureFlag::class );
 
 		// @todo Remove fix to load our stylesheets after editor CSS.
 		// See #3068 for the rationale of this fix. It should be no longer
@@ -90,11 +92,11 @@ class Assets {
 		$asset_api->register_script( 'wc-attribute-filter', $asset_api->get_block_asset_build_path( 'attribute-filter' ), $block_dependencies );
 		$asset_api->register_script( 'wc-active-filters', $asset_api->get_block_asset_build_path( 'active-filters' ), $block_dependencies );
 
-		if ( Package::is_experimental_build() ) {
+		if ( $feature_flag::is_experimental_build() ) {
 			$asset_api->register_script( 'wc-single-product-block', $asset_api->get_block_asset_build_path( 'single-product' ), $block_dependencies );
 		}
 
-		if ( Package::is_feature_plugin_build() ) {
+		if ( $feature_flag::is_feature_plugin_build() ) {
 			$asset_api->register_script( 'wc-checkout-block', $asset_api->get_block_asset_build_path( 'checkout' ), $block_dependencies );
 			$asset_api->register_script( 'wc-cart-block', $asset_api->get_block_asset_build_path( 'cart' ), $block_dependencies );
 		}
@@ -133,6 +135,7 @@ class Assets {
 	 * @since 2.5.0 returned merged data along with incoming $settings
 	 */
 	public static function get_wc_block_data( $settings ) {
+		$feature_flag   = Package::container()->get( FeatureFlag::class );
 		$tag_count      = wp_count_terms( 'product_tag' );
 		$product_counts = wp_count_posts( 'product' );
 		$page_ids       = [
@@ -190,7 +193,7 @@ class Assets {
 				'checkoutAllowsGuest'           => filter_var( get_option( 'woocommerce_enable_guest_checkout' ), FILTER_VALIDATE_BOOLEAN ),
 				'checkoutAllowsSignup'          => filter_var( get_option( 'woocommerce_enable_signup_and_login_from_checkout' ), FILTER_VALIDATE_BOOLEAN ),
 				'baseLocation'                  => wc_get_base_location(),
-				'woocommerceBlocksPhase'        => WOOCOMMERCE_BLOCKS_PHASE,
+				'woocommerceBlocksPhase'        => $feature_flag::get_flag(),
 				'hasDarkEditorStyleSupport'     => current_theme_supports( 'dark-editor-style' ),
 				'loginUrl'                      => wp_login_url(),
 
