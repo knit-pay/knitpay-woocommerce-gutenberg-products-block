@@ -3,7 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Package as BlocksPackage;
-use Automattic\WooCommerce\Blocks\Domain\Services\FeatureFlag;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Exception;
 use WC_Order;
 
@@ -39,8 +39,8 @@ class DraftOrders {
 	 * Set all hooks related to adding Checkout Draft order functionality to Woo Core.
 	 */
 	public function init() {
-		$feature_flag = BlocksPackage::container()->get( FeatureFlag::class );
-		if ( $feature_flag::is_feature_plugin_build() ) {
+		$feature_gating = BlocksPackage::container()->get( FeatureGating::class );
+		if ( $feature_gating::is_feature_plugin_build() ) {
 			add_filter( 'wc_order_statuses', [ $this, 'register_draft_order_status' ] );
 			add_filter( 'woocommerce_register_shop_order_post_statuses', [ $this, 'register_draft_order_post_status' ] );
 			add_filter( 'woocommerce_valid_order_statuses_for_payment', [ $this, 'append_draft_order_post_status' ] );

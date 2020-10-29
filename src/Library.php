@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Services\FeatureFlag;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
  * Library class.
@@ -42,7 +42,7 @@ class Library {
 	 */
 	public static function register_blocks() {
 		global $wp_version;
-		$feature_flag = Package::container()->get( FeatureFlag::class );
+		$feature_gating = Package::container()->get( FeatureGating::class );
 
 		$blocks = [
 			'AllReviews',
@@ -69,12 +69,12 @@ class Library {
 			$blocks[] = 'AttributeFilter';
 			$blocks[] = 'ActiveFilters';
 
-			if ( $feature_flag::is_feature_plugin_build() ) {
+			if ( $feature_gating::is_feature_plugin_build() ) {
 				$blocks[] = 'Checkout';
 				$blocks[] = 'Cart';
 			}
 		}
-		if ( $feature_flag::is_experimental_build() ) {
+		if ( $feature_gating::is_experimental_build() ) {
 			$blocks[] = 'SingleProduct';
 		}
 		foreach ( $blocks as $class ) {

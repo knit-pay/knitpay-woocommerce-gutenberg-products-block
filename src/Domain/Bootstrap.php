@@ -16,7 +16,7 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
-use Automattic\WooCommerce\Blocks\Domain\Services\FeatureFlag;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
@@ -76,7 +76,7 @@ class Bootstrap {
 			$this->container->get( Installer::class );
 			BlockAssets::init();
 		}
-		$this->container->get( FeatureFlag::class )->init();
+		$this->container->get( FeatureGating::class )->init();
 		$this->container->get( DraftOrders::class )->init();
 		$this->container->get( CreateAccount::class )->init();
 		$this->container->get( PaymentsApi::class );
@@ -132,9 +132,9 @@ class Bootstrap {
 	 */
 	protected function register_dependencies() {
 		$this->container->register(
-			FeatureFlag::class,
+			FeatureGating::class,
 			function ( Container $container ) {
-				return new FeatureFlag( $container->get( Package::class ) );
+				return new FeatureGating( $container->get( Package::class ) );
 			}
 		);
 		$this->container->register(

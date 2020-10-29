@@ -6,7 +6,7 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services;
  *
  * @internal
  */
-class FeatureFlag {
+class FeatureGating {
 
 	/**
 	 * Current flag value.
