@@ -134,7 +134,7 @@ class Bootstrap {
 		$this->container->register(
 			FeatureGating::class,
 			function ( Container $container ) {
-				return new FeatureGating( $container->get( Package::class ) );
+				return new FeatureGating();
 			}
 		);
 		$this->container->register(
