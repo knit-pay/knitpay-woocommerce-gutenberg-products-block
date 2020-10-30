@@ -40,7 +40,7 @@ const Label = ( props ) => {
 };
 
 /**
- * Bank transfer (BACS) payment method config object.
+ * Knit Pay payment method config object.
  */
 const options = {
 	name: PAYMENT_METHOD_NAME,

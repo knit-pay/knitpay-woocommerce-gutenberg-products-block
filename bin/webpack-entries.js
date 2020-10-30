@@ -128,6 +128,8 @@ const entries = {
 			'./assets/js/payment-method-extensions/payment-methods/bacs/index.js',
 		'wc-payment-method-cod':
 			'./assets/js/payment-method-extensions/payment-methods/cod/index.js',
+		'wc-payment-method-pronamic_pay':
+			'./assets/js/payment-method-extensions/payment-methods/pronamic_pay/index.js',
 	},
 };
 
