@@ -22,7 +22,7 @@ class FeatureGating {
 	 * Set correct flag.
 	 */
 	public function init() {
-		$default_flag  = defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ? 2 : 1;
+		$default_flag  = defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ? self::FEATURE_PLUGIN_FLAG : self::CORE_FLAG;
 		$allowed_flags = [ self::EXPERIMENTAL_FLAG, self::FEATURE_PLUGIN_FLAG, self::CORE_FLAG ];
 
 		if ( file_exists( __DIR__ . '/../../../blocks.ini' ) ) {
