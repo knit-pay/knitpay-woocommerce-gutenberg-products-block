@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks\Payments;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\NoticeHandler;
+use Automattic\WooCommerce\Blocks\Payments\Integrations\KnitPay;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\Stripe;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
@@ -121,6 +122,9 @@ class Api {
 		);
 		$payment_method_registry->register(
 			Package::container()->get( CashOnDelivery::class )
+		);
+		$payment_method_registry->register(
+			Package::container()->get( KnitPay::class )
 		);
 	}
 
