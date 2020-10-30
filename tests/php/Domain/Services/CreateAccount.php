@@ -3,6 +3,7 @@
 namespace Automattic\WooCommerce\Blocks\Tests\Library;
 
 use \WP_UnitTestCase;
+use Automattic\WooCommerce\Blocks\Package as BlocksPackage;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
 
@@ -11,14 +12,14 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount as TestedCreateA
 /**
  * Tests CreateAccount service class.
  *
- * Note: this feature is currently feature gated. This test class assumes
- * that woocommerce_blocks_phase===3, i.e. dev build. Tests will fail
- * with other builds (release feature plugin, woo core package).
- * Related: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/3211
- *
  * @since $VID:$
  */
 class CreateAccount extends WP_UnitTestCase {
+	public function setUp() {
+		parent::setUp();
+
+		BlocksPackage::init();
+	}
 
 	private function get_test_instance() {
 		return new TestedCreateAccount( new Package( 'test', './' ) );
@@ -46,7 +47,7 @@ class CreateAccount extends WP_UnitTestCase {
 			'email'      => $email,
 			'first_name' => $first_name,
 			'last_name'  => $last_name
-		]);
+		] );
 
 		$test_order = new \WC_Order();
 
